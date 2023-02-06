@@ -8,6 +8,10 @@ mod query_params;
 mod middleware_message;
 mod read_middleware_custom_header;
 mod set_middleware_custom_header;
+mod always_errors;
+mod return_201;
+mod get_json;
+mod validate_data;
 
 use hello_world::hello_world;
 use mirror_body_json::mirror_body_json;
@@ -19,6 +23,11 @@ use query_params::query_params;
 use middleware_message::middleware_message;
 use read_middleware_custom_header::read_middleware_custom_header;
 use set_middleware_custom_header::set_middleware_custom_header;
+use always_errors::always_errors;
+use return_201::return_201;
+use get_json::get_json;
+use validate_data::validate_with_serde;
+
 use axum::{
     http::Method,
     routing::{get, post},
@@ -50,5 +59,10 @@ pub fn create_routes() -> Router {
         .route("/middleware_message", get(middleware_message))
         .layer(cors)
         .layer(Extension(shared_data))
+        .route("/always_errors", get(always_errors))
+        .route("/return_201", post(return_201))
+        .route("/get_json", get(get_json))
+        .route("/validate_data", post(validate_with_serde))
+
 
 }
